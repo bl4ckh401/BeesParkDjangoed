@@ -2,5 +2,7 @@ from django.contrib import admin
 from .models import *
 
 # Register your models here.
-admin.site.register(Tables)
-admin.site.register(ReserveTable)
+
+admin.site.register(Posts)
+admin.site.register(Product)
+admin.site.register(Accounts)

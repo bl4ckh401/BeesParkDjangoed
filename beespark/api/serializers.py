@@ -1,19 +1,32 @@
+from dataclasses import field
+from pyexpat import model
 from django.db import models
-from rest_framework import fields, serializers
-from .models import ReserveTable, Tables
+from rest_framework import serializers
+from django.contrib.auth.models import User
 
-# class PostSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = Post
-#         fields = ('file')
+from .models import Posts, Product
 
 
-class TableSerializer(serializers.ModelSerializer):
+class UserSerializer(serializers.ModelSerializer):
     class Meta:
-        model = ReserveTable
-        fields = ('table', 'name', 'arrival')
+        model = User
+        fields = ('firstname', 'lastname', 'email', 'username', 'password')
 
-class CreateTableSerializer(serializers.ModelSerializer):
+
+class UserLogin(serializers.ModelSerializer):
     class Meta:
-        model = Tables
-        fields = ("__all__")
+        model = User
+        fields = ('username', 'password')
+
+
+class PostSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Posts
+        fields = ['post', 'post_description', 'likes', 'comment']
+
+
+class ProductSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Product
+        fields = ['product_title', 'product_price',
+                  'product_image', 'product_description', 'product_quantity', 'product_slug']

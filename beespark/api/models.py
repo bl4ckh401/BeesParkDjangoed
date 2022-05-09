@@ -1,27 +1,41 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
 
 
-class Tables(models.Model):
-    name = models.CharField(unique=True, primary_key=True,
-                            default="", max_length=255)
-    tableof = models.IntegerField(default=1, null=True)
-    reserved = models.BooleanField(default=False, null=True)
+class Posts(models.Model):
+    post_id = models.IntegerField(
+        primary_key=True, unique=True, auto_created=True, null=False)
+    post = models.ImageField(upload_to='images', null=True)
+    post_description = models.CharField(max_length=255, default='', null=True)
+    likes = models.IntegerField(default=0, null=True)
+    comment = models.CharField(max_length=255, default='', null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.name
-
-    def book(self):
-        self.reserved = True
-        return self.name+"has been Reserved "
+        return self.post
 
 
-class ReserveTable(models.Model):
-    table = models.ForeignKey(Tables, null=True,
-                              on_delete=models.CASCADE)
-    name = models.CharField(default="", max_length=255, null=True)
-    arrival = models.DateTimeField(null=True)
+class Product(models.Model):
+    product_id = models.IntegerField(
+        primary_key=True, unique=True, auto_created=True, null=False)
+    product_title = models.CharField(max_length=40, default='', null=True,)
+    product_price = models.IntegerField(default=0, null=True)
+    product_image = models.ImageField(upload_to='images', null=True)
+    product_description = models.CharField(max_length=400, default='', )
+    product_quantity = models.IntegerField(default=0, null=True)
+    product_slug = models.SlugField(default='', max_length=20,)
 
     def __str__(self):
-        return self.name+" booked table "+self.table.name
+        return self.product_title
+
+
+class Accounts(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    expiry_day = models.DateField()
+    weekly_summary = models.CharField(max_length=255, default='', null=True)
+    personal_best = models.CharField(max_length=255, default='', null=True)
+
+    def __str__(self):
+        return self.user.username
